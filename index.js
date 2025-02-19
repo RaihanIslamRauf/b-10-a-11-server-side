@@ -27,6 +27,44 @@ async function run() {
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+
+    // marathons related apis
+    const marathonsCollection = client.db('MarathonManagementSystem').collection('marathons');
+    const usersCollection = client.db('MarathonManagementSystem').collection('users');
+
+    app.get('/marathons', async(req,res)=>{
+       const cursor = marathonsCollection.find();
+       const result = await cursor.toArray();
+       res.send(result);
+    })
+
+    app.get("/marathons/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await marathonsCollection.findOne(query);
+      res.send(result);
+    });
+    app.post("/marathons", async (req, res) => {
+      const newMarathons = req.body;
+      const result = await marathonsCollection.insertOne(newMarathons);
+      res.send(result);
+    });
+
+    // Create a new user
+    app.get("/users", async (req, res) => {
+      const cursor = usersCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.post("/users", async (req, res) => {
+      const newUser = req.body;
+      console.log("Creating new user:", newUser);
+      const result = await usersCollection.insertOne(newUser);
+      res.send(result);
+    });
+
+
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
