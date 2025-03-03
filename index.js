@@ -32,6 +32,11 @@ async function run() {
     const marathonsCollection = client.db('MarathonManagementSystem').collection('marathons');
     const usersCollection = client.db('MarathonManagementSystem').collection('users');
 
+    app.get('/marathons/home', async(req,res)=>{
+       const cursor = marathonsCollection.find().limit(6);
+       const result = await cursor.toArray();
+       res.send(result);
+    })
     app.get('/marathons', async(req,res)=>{
        const cursor = marathonsCollection.find();
        const result = await cursor.toArray();
