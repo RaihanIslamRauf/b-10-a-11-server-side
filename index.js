@@ -27,7 +27,7 @@ async function run() {
     const db = client.db('MarathonManagementSystem');
     const marathonsCollection = db.collection('marathons');
     const usersCollection = db.collection('users');
-    const registrationsCollection = db.collection('registrations'); 
+    const registrationsCollection = db.collection('registrations');
 
     // Get all marathons (Home - limit 6)
     app.get('/marathons/home', async (req, res) => {
@@ -59,6 +59,32 @@ async function run() {
       res.send(result);
     });
 
+    // Update a marathon
+    app.put("/marathons/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedMarathon = req.body;
+      const query = { _id: new ObjectId(id) };
+      const update = {
+        $set: {
+          name: updatedMarathon.name,
+          date: updatedMarathon.date,
+          location: updatedMarathon.location,
+          description: updatedMarathon.description,
+        },
+      };
+
+      const result = await marathonsCollection.updateOne(query, update);
+      res.send(result);
+    });
+
+    // Delete a marathon
+    app.delete("/marathons/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await marathonsCollection.deleteOne(query);
+      res.send(result);
+    });
+
     // Get all users
     app.get("/users", async (req, res) => {
       const cursor = usersCollection.find();
@@ -85,7 +111,8 @@ async function run() {
     // Register a user for a marathon
     app.post("/registrations", async (req, res) => {
       const registration = req.body;
-      
+
+      // Check if the user is already registered for the marathon
       const existingRegistration = await registrationsCollection.findOne({
         email: registration.email,
         marathonId: registration.marathonId,
@@ -95,11 +122,13 @@ async function run() {
         return res.status(400).send({ message: "You have already registered for this marathon." });
       }
 
-      const result = await registrationsCollection.insertOne(registration);
+      const result = await registrationsCollection.insertOne({
+        ...registration,
+      });
       res.send(result);
     });
 
-    // Update registration count in a marathon
+    // Update registration count in a marathon 
     app.patch("/marathons/:id/updateRegistrationCount", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
@@ -109,8 +138,69 @@ async function run() {
       res.send(result);
     });
 
+    // Get all marathons a user has applied for (filter by email)
+    app.get('/registrations', async (req, res) => {
+      const { email } = req.query; // Get email from query parameters
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+      try {
+        const registrations = await registrationsCollection.find({ email }).toArray();
+        res.status(200).json(registrations);
+      } catch (error) {
+        res.status(500).json({ message: "Error fetching registrations." });
+      }
+    });
+
+    // Delete a user's registration by email
+    app.delete("/registrations/:id", async (req, res) => {
+      const { id } = req.params; // Get the registration ID from URL params
+      try {
+        const result = await registrationsCollection.deleteOne({ _id: new ObjectId(id) });
+        if (result.deletedCount === 0) {
+          return res.status(404).json({ message: "Registration not found." });
+        }
+        res.status(200).json({ message: "Registration deleted successfully." });
+      } catch (error) {
+        res.status(500).json({ message: "Error deleting registration." });
+      }
+    });
+
+    // Update a user's marathon registration
+  app.put("/registrations/:id", async (req, res) => {
+  const { id } = req.params;
+  const { marathonTitle, startDate, firstName, lastName, contactNumber } = req.body;
+
+  if (!marathonTitle || !startDate || !firstName || !lastName || !contactNumber) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  try {
+    const result = await registrationsCollection.updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          marathonTitle,
+          startDate,
+          firstName,
+          lastName,
+          contactNumber,
+        }
+      }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ message: "Registration not found or no changes made." });
+    }
+
+    res.status(200).json({ message: "Registration updated successfully." });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating registration." });
+  }
+});
+
   } finally {
-    // Ensures that the client will close when you finish/error
+    // Ensure the client will close when finished or upon error
     // await client.close();
   }
 }
@@ -122,5 +212,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`People are waiting for start running at: ${port}`);
+  console.log(`Server is running on port: ${port}`);
 });
