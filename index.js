@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const jwt = require("jsonwebtoken");
+const cookieParser = require('cookie-parser');
 const app = express();
 require('dotenv').config();
 
@@ -8,6 +10,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.3yfc6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
