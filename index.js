@@ -83,31 +83,33 @@ async function run() {
         .send({ success: true });
     });
 
-    // Get all marathons (Home - limit 6)
+    // Get all marathons (Home - limit 8)
     app.get("/marathons/home", async (req, res) => {
-      const cursor = marathonsCollection.find().limit(6);
+      const cursor = marathonsCollection.find().limit(8);
       const result = await cursor.toArray();
+      console.log(result);
       res.send(result);
     });
 
     // Get all marathons
     app.get("/marathons", async (req, res) => {
-  const { sort, title } = req.query;
-  let sortOption = {};
+      const { sort, title } = req.query;
+      let sortOption = {};
 
-  // Sort logic
-  if (sort === "dateAsc") sortOption = { marathonStartDate: 1 };
-  else if (sort === "dateDesc") sortOption = { marathonStartDate: -1 };
-  else if (sort === "registrations") sortOption = { totalRegistrationCount: -1 };
-  else if (sort === "name") sortOption = { title: 1 };
+      // Sort logic
+      if (sort === "dateAsc") sortOption = { marathonStartDate: 1 };
+      else if (sort === "dateDesc") sortOption = { marathonStartDate: -1 };
+      else if (sort === "registrations")
+        sortOption = { totalRegistrationCount: -1 };
+      else if (sort === "name") sortOption = { title: 1 };
 
-  // Filter by title if it exists
-  const query = title ? { title: { $regex: title, $options: "i" } } : {};
+      // Filter by title if it exists
+      const query = title ? { title: { $regex: title, $options: "i" } } : {};
 
-  const cursor = marathonsCollection.find(query).sort(sortOption);
-  const result = await cursor.toArray();
-  res.send(result);
-});
+      const cursor = marathonsCollection.find(query).sort(sortOption);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     // Get a single marathon by ID
     app.get("/marathons/:id", async (req, res) => {
