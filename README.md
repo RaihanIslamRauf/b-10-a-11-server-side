@@ -1,52 +1,109 @@
 # RunTrack
 
-RunTrack is a dynamic web application designed to streamline marathon event management. Whether you're an organizer managing events or a participant looking to register, RunTrack provides a seamless experience for all users.
+## 📘 Project Overview
 
-## Live URL
-https://assignment-11-4d65a.web.app/
-
----
-
-## Purpose
-RunTrack simplifies the process of discovering, registering for, and managing marathons. It bridges the gap between event organizers and participants, ensuring an efficient and transparent system for marathon management.
+**RunTrack** is a modern web platform built to simplify marathon event management. It enables users to explore, register for, and manage marathons from a personalized dashboard while offering organizers an efficient system to track participation.
 
 ---
 
-## Key Features
-- **Marathon Exploration**: View upcoming marathons with details such as date, location, and description.
-- **User Registration**: Register for marathons and track applied events in a personalized dashboard.
-- **Dashboard**: Users can view and manage their registered marathons.
-- **Real-time Updates**: Marathon details dynamically update as users register.
-- **Registration Management**: Users can modify or cancel their registrations at any time.
+## ✅ Features List
+
+- **Explore Marathons**  
+  Browse all upcoming marathon events with key details like date, location, and description.
+
+- **Search & Sort**  
+  Easily search marathons by name and sort them by date for better accessibility.
+
+- **User Registration**  
+  Users can register for events with one click and track their registrations in real time.
+
+- **Dashboard Management**  
+  View all applied marathons, and cancel participation if needed.
+
+- **Secure Authentication**  
+  Firebase Authentication with JWT ensures protected user sessions.
+
+- **Real-Time Feedback**  
+  Get instant responses for actions using toast notifications and confirmation modals.
+
+- **Responsive Design**  
+  Fully mobile and tablet-optimized layout for seamless experience on any device.
 
 ---
 
-## NPM Packages Used
-- `react-router-dom`: For routing and navigation.
-- `react-toastify`: For displaying user-friendly notifications.
-- `firebase`: For authentication and hosting.
-- `react-icons`: For adding stylish icons.
-- `sweetalert2`: For interactive alerts and modals.
-- `lottie-react`: For adding engaging animations.
-- `framer-motion`: For smooth and visually appealing animations.
+## 🧱 Tech Stack
+
+### Frontend:
+- **React.js** – Component-based UI building
+- **Tailwind CSS + DaisyUI** – Utility-first styling with prebuilt components
+- **React Router DOM** – Seamless page navigation
+- **Framer Motion & Lottie** – Smooth animations and engaging effects
+
+### Backend:
+- **Node.js & Express.js** – RESTful API development
+- **MongoDB (Atlas)** – Cloud-based NoSQL database
+
+### Authentication & Hosting:
+- **Firebase Auth** – Login/Signup system
+- **Firebase Hosting** – Frontend deployment
+- **Vercel** – Backend server deployment
+- **JWT** – Token-based secure API calls
 
 ---
 
-## Technologies Used
-- **Frontend**: React.js, Tailwind CSS, DaisyUI
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB (Atlas)
-- **Authentication**: Firebase Authentication
-- **Client-side Hosting**: Firebase
-- **Server-side Hosting**: Vercel
+## ⚙️ Setup Instructions
 
----
+### 1. Clone the Repository
 
-## Future Enhancements
-- **Leaderboard System**: Implement a ranking system based on marathon performance.
-- **Social Media Sharing**: Enable participants to share their marathon registrations.
-- **Event Analytics Dashboard**: Provide insights into marathon participation trends.
+```bash
+git clone https://github.com/RaihanIslamRauf/b-10-a-11-server-side
+cd b-10-a-11-server-side
+```
 
----
+### 2. Install Dependencies
+```bash
+npm install
+```
+### 3. Import .env file
+
+### 4. Start the Application 
+
+### Frontend:
+```bash
+npm run dev
+```
+
+### Backend:
+```bash
+nodemon index.js
+```
+
+## 🌐 Live Link
+
+🔗 [RunTrack Live Site](https://assignment-11-4d65a.web.app/)
+
+## 🔐 Default Credentials 
+
+No default credentials are required.  
+You can sign up with your own email and password through the app.
+
+## 🚀 Future Enhancements
+
+- **Leaderboard System**  
+  Add rankings based on user performance and completion times.
+
+- **Event Analytics Dashboard**  
+  Provide organizers with insights into registration trends and participant stats.
+
+- **Social Media Sharing**  
+  Allow users to share their registrations or results on social platforms.
+
+- **Multi-role Support**  
+  Introduce roles like admin or organizer for better control and moderation.
+
+- **Push Notifications**  
+  Send reminders or updates for registered events.
+
+
 
 
